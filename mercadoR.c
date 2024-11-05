@@ -5,6 +5,7 @@
 
 #define MAX_PRODUTOS 50
 
+// Estruturas para produtos e carrinho
 typedef struct {
     int cod;
     char nome[30];
@@ -17,6 +18,7 @@ typedef struct {
     int qntCarrinho;
 } Carrinho;
 
+// Estrutura centralizada para gerenciamento
 typedef struct {
     Produto produtos[MAX_PRODUTOS];
     Carrinho carrinho[MAX_PRODUTOS];
@@ -24,60 +26,11 @@ typedef struct {
     int qntCarrinho;
 } Loja;
 
-void limparTela();
-void exibirProduto(Produto p);
-void exibirMenu();
-void cadastrarProduto(Loja *loja);
-void listarProdutos(Loja *loja);
-void adicionarEstoque(Loja *loja);
-void buscarProdutoPorCodigo(Loja *loja);
-void comprarProduto(Loja *loja);
-void visualizarCarrinho(Loja *loja);
-void limparCarrinho(Loja *loja);
-void fecharPedido(Loja *loja);
-
-int main(void) {
-    setlocale(LC_ALL, "Portuguese");
-
-    Loja loja = { .qntProdutos = 0, .qntCarrinho = 0 };
-    int opcao;
-
-    while (1) {
-        exibirMenu();
-        printf("Escolha uma opção: ");
-        scanf("%d", &opcao);
-        limparTela();
-
-        switch (opcao) {
-            case 1:
-                cadastrarProduto(&loja);
-                break;
-            case 2:
-                adicionarEstoque(&loja);
-                break;
-            case 3:
-                listarProdutos(&loja);
-                break;
-            case 4:
-                comprarProduto(&loja);
-                break;
-            case 5:
-                visualizarCarrinho(&loja);
-                break;
-            case 6:
-                limparCarrinho(&loja);
-                break;
-            case 7:
-                fecharPedido(&loja);
-                break;
-            case 8:
-                printf("Até a próxima!\n");
-                return 0;
-            default:
-                printf("Opção inválida! Tente novamente.\n");
-        }
-        limparTela();
-    }
+void limparTela() {
+    printf("\nPressione ENTER para continuar...");
+    fflush(stdin);  // Limpa o buffer de entrada para evitar problemas
+    getchar();
+    system("cls");  // Para o Windows, substitui "clear" por "cls"
 }
 
 void exibirMenu() {
@@ -92,6 +45,7 @@ void exibirMenu() {
     printf("(8) Sair\n");
 }
 
+// Exibe as informações de um produto
 void exibirProduto(Produto p) {
     printf("Código: %d\n", p.cod);
     printf("Nome: %s\n", p.nome);
@@ -100,6 +54,7 @@ void exibirProduto(Produto p) {
     printf("--------------------------\n");
 }
 
+// Funções para cadastrar e manipular produtos e estoque
 void cadastrarProduto(Loja *loja) {
     int quantidade;
     printf("Quantos produtos deseja cadastrar? ");
@@ -111,6 +66,7 @@ void cadastrarProduto(Loja *loja) {
         p->cod = loja->qntProdutos;
         
         printf("Digite o nome do produto: ");
+        fflush(stdin);
         scanf(" %[^\n]", p->nome);
         
         printf("Digite o preço do produto: ");
@@ -161,8 +117,54 @@ void buscarProdutoPorCodigo(Loja *loja) {
     }
 }
 
-void limparTela() {
-    printf("\nPressione ENTER para continuar...");
-    getchar();
-    system("clear");
+// Funções vazias para evitar erro de compilação
+void comprarProduto(Loja *loja) { }
+void visualizarCarrinho(Loja *loja) { }
+void limparCarrinho(Loja *loja) { }
+void fecharPedido(Loja *loja) { }
+
+int main(void) {
+    setlocale(LC_ALL, "Portuguese");
+
+    Loja loja;
+    loja.qntProdutos = 0;
+    loja.qntCarrinho = 0;
+    int opcao;
+
+    while (1) {
+        exibirMenu();
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        limparTela();
+
+        switch (opcao) {
+            case 1:
+                cadastrarProduto(&loja);
+                break;
+            case 2:
+                adicionarEstoque(&loja);
+                break;
+            case 3:
+                listarProdutos(&loja);
+                break;
+            case 4:
+                comprarProduto(&loja);
+                break;
+            case 5:
+                visualizarCarrinho(&loja);
+                break;
+            case 6:
+                limparCarrinho(&loja);
+                break;
+            case 7:
+                fecharPedido(&loja);
+                break;
+            case 8:
+                printf("Até a próxima!\n");
+                return 0;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+        }
+        limparTela();
+    }
 }
